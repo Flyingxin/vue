@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="box" style="font-size: 14px;color:red">{{index}}hello123 {{msg}} 1{{item}}<h1 class="nnn">2321 {{array}}
+        </h1>
+    </div>
+    <script src="dist/vue.js"></script>
+    <script>
+        // 响应式 vue2
+        let vm = new Vue({
+            el: '#app',
+            data() {
+                // console.log(this); //底层要用call改变this指向，不然会指向windows
+                return {
+                    index: 0,
+                    msg: 'msgData',
+                    item: 'itemData',
+                    string: 'string',
+                    array: [1, 2, 'string', { msg: 'obj' }],
+                    obj: {
+                        one: 1,
+                        two: 'string',
+                        three: [1, 2, 3, 'string', { msg: 'obj' }],
+                        four: {
+                            a: 555
+                        }
+                    }
+                }
+            },
+            methods:{
+                a(){
+                    console.log('字符串格式');
+                }
+            },
+            // 目前只实现单个属性监视，还未实现对象、数组形式整体监视！！！
+            watch: {
+                // 字符串形式
+                // string:'a', // a是函数
+                // 函数形式
+                msg(newVal, oldVal) {
+                    console.log('函数格式1',newVal, oldVal);
+                },
+                'obj.four.a'(newVal, oldVal) {  // 深层属性监测
+                    console.log('函数格式2',newVal, oldVal);
+                },
+                // 对象形式
+                string: {
+                    immediate: true,
+                    handler(newVal, oldVal) {
+                        console.log('对象格式',newVal, oldVal);
+                    }
+                },
+                // 数组形式
+                // array: [
+                //     (newVal, oldVal) => {
+                //         console.log('数组格式1',newVal, oldVal);
+                //     },
+                //     (newVal, oldVal) => {
+                //         console.log('数组格式2',newVal, oldVal);
+                //     }
+                // ]
+
+            },
+        })
+        console.log('vm: ',vm);
+        // vm.string = 123
+        vm.msg = '156'
+        vm.obj.four.a = 659
+        // vm.array.push(123)
+
+        /**
+         * watch监测原理
+         *  1 利用的是实例Watcher类用来自动更新，每个属性都实例一个Watcher对象
+         *  2 watch有字符串、函数、数组、对象的格式，首先用createWatcher方法格式化处理
+         *  3 然后将处理结果全部暴露到实例对象$watch上，并且为每个属性实例Watcher
+         *  4 传入vm实例对象、key、value（函数本身）、options用户配置项【其中user：true是用来区分watch监测属性和异步渲染DOM的】
+         *  5 然后再watcher.js中获取旧值、与新值后，再利用call方法执行cb回调函数【watch监测的原本函数】
+         * 
+        */
+    </script>
+</body>
+
+</html>

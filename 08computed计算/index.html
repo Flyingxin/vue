@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="box" style="font-size: 14px;color:red">{{fullname}}</div>
+    <script src="dist/vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data(){
+                return{
+                    firstName : '张',
+                    lastName: '三'
+                }
+            },
+            // 具有缓存机制，数据改变才会重新执行
+            // 使用方式 -> 函数、对象
+            computed: {
+                fullname(){
+                    console.log('获取计算属性函数');
+                    // console.log(this.firstName + this.lastName);
+                    return this.firstName + this.lastName
+                },
+                fullname1:{
+                    get(){
+                        console.log('获取计算属性对象');
+                        return this.firstName
+                    },
+                    set(){
+                        console.log('修改计算属性对象');
+                        // return vm.fullname1 = 2
+                    }
+                }
+            }
+            
+        })
+        console.log(vm);
+        // 节流阀起作用，计算一次，如果不重新计算，一直用缓存
+        vm.firstName
+        vm.firstName
+        vm.firstName
+        vm.firstName
+        vm.firstName
+        vm.firstName
+
+        vm.fullname1
+        vm.fullname1 = 2
+
+        setTimeout( () => {
+            vm.firstName = '238'
+        },300)
+    </script>
+    <!-- computed
+    
+        1 格式化computed
+        2 利用Object.defineProperty方法设置响应式，并将属性代理到vm实例上
+        3 设置lazy变量 -> 让没有参与计算的函数，不执行
+        3 设置缓存机制 通过一个变量dirty
+            实现方式： 通过高阶函数：高阶函数的参数是一个函数 or 返回值是一个函数
+    
+        面试题：
+        watch 和 computed
+        computed具有懒执行lazy变量，具有视图用到才会执行  -> true时不执行，反之执行
+        computed具有缓存机制 通过一个变量dirty -> true时执行 get 函数，重新计算，反之读取缓存
+
+        问题： 在视图中，更新数据没有效果
+        // 因为这里有多个watcher 渲染watcher、computed、watch
+
+
+        1 deps 和depsId有区别吗？ 
+            ==> dep存放依赖，deps进行去重 最后把该依赖对应的watcher放到subs进行渲染
+        2 watcher文件的depend()函数是干嘛的？？？为什么要让所有dep都记住这个渲染的watcher ？？ 
+            ===> 因为该计算属性的watcher计算完之后，还有dom的watcher要渲染,把他收集起来去重，渲染一次就行
+        3 computed的deps为什么要和watcher双向绑定？？？
+            ===> 山一问是答案
+        4 dom的watcher 、watch的watcher 、 computed的watcher更新顺序？？？
+            ===> 根据初始化顺序，先data，再watch，最后computed
+    -->
+</body>
+
+</html>

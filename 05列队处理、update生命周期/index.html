@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="box" style="font-size: 14px;color:red">hello123 {{msg}} 1{{item}}<h1 class="nnn">2321 {{array}}</h1>
+    </div>
+    <script src="dist/vue.js"></script>
+    <script>
+        // 响应式 vue2
+        let vm = new Vue({
+            el: '#app',
+            data() {
+                // console.log(this); //底层要用call改变this指向，不然会指向windows
+                return {
+                    msg: 'msgData',
+                    item: 'itemData',
+                    string: 'string',
+                    array: [1, 2, 'string', { msg: 'obj' }],
+                    obj: {
+                        one: 1,
+                        two: 'string',
+                        three: [1, 2, 3, 'string', { msg: 'obj' }],
+                        four: {
+                            a: 555
+                        }
+                    }
+                }
+            },
+            props: {},
+            watch: {},
+            computed: {},
+            updated(){
+                console.log('updated生命周期');
+            },
+            mounted(){
+                console.log('mounted生命周期');
+            },
+            beforeUpdate(){
+                console.log('beforeUpdate生命周期');
+            }
+        })
+        console.log(vm);
+
+        setTimeout(() => {
+            vm.msg = '自动更新'
+            vm.array.push(123332)
+        }, 1000);
+
+        /**
+         * 1
+         *  但是以上方法虽然完成了自动更新，但是每改变一个属性数据就要渲染一次dom，性能问题很严重
+         *  所以引入了 -> 列队处理
+         *  在watcher类中，通过异步方法，将watcher收集的依赖进行去重处理，最后统一更新
+         *  优化了性能问题
+         * 
+         * 2
+         *  在renderMixin方法中定义了$nextTick全局方法，获取dom更新之后的数据
+         * 
+        */
+       console.log(vm.msg);
+        vm.$nextTick( () => {
+            console.log(vm.msg)
+            // console.log(document.querySelectorAll('div')[0]);
+        })
+
+        /**
+         * updated生命周期调用
+         * 在watcher实例的第三个参数添加callHook，并且更新dom时一起调用回调函数即可
+        */
+    </script>
+</body>
+
+</html>

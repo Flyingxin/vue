@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="dist/vue.js"></script> 
+</head>
+
+<body>
+    <div id="app">
+        <nb-button></nb-button>
+    </div>
+    <!-- 
+        <ww-button></ww-button> -->
+    <script>
+        // Vue.component('qj-button',{
+        //     template: '<button >全局</button>'
+        // })
+        let vm = new Vue({
+            el: '#app',
+            components:{
+                'nb-button': {
+                    template: '<button>内部components</button>'
+                }
+            }
+            
+        })
+    </script>
+    <!-- component全局组件
+        
+        1 创建全局组件，定义全局组件映射关系表
+        2 Vue.extend作用：创建子类，初始化子组件，继承父属性
+        3 创建组件的vnode vnode/index.js
+        4 创建真实dom  （ new Vue.extend() ）
+        渲染组件  
+            标签的渲染 -> 获取el ->真实dom
+    -->
+
+
+
+
+    <!-- vue组件开发有点
+        1 复用、好维护
+        2 组件级的更新，提高渲染性能你
+        
+        组件特性：属性 样式 插槽
+
+    -->
+</body>
+
+</html>

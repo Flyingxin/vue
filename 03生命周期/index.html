@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="box" style="font-size: 14px;color: red">hello123 {{msg}} 1{{item}}<h1 class="nnn">2321</h1>
+    </div>
+    <script src="dist/vue.js"></script>
+    <script>
+        // 响应式 vue2
+        let vm = new Vue({
+            el: '#app',
+            data() {
+                // console.log(this); //底层要用call改变this指向，不然会指向windows
+                return {
+                    msg: 'msgData',
+                    item: 'itemData',
+                    string: 'string',
+                    array: [1, 2, 'string', { msg: 'obj' }],
+                    obj: {
+                        one: 1,
+                        two: 'string',
+                        three: [1, 2, 3, 'string', { msg: 'obj' }],
+                        four: {
+                            a: 555
+                        }
+                    }
+                }
+            },
+            props: {},
+            watch: {},
+            computed: {},
+            beforeCreate() {
+                console.log('创建前调用: beforeCreate');
+            },
+            created() {
+                console.log(this);  // 指向Windows
+                console.log('创建后调用: created');
+            },
+            beforeMount() {
+                console.log('挂载前调用: beforeMount');
+            },
+            mounted() {
+                console.log('挂载后调用: mounted');
+            },
+            beforeUpdate() {
+                console.log('更新前调用: beforeUpdate');
+            },
+            updated() {
+                console.log('更新后调用: updated');
+            },
+            beforeDestroy() {
+                console.log('销毁前调用: beforeDestroy');
+            },
+            destroyed() {
+                console.log('销毁后调用: destroy');
+            }
+        })
+        // 响应式 vue2
+        Vue.Mixin({
+            created: function a() {
+                console.log(this);  // 指向vm实例对象
+                console.log('自定义全局混入created比生命周期先调用 a');
+            }
+        })
+        Vue.Mixin({
+            created: function b() {
+                console.log('自定义全局混入created比生命周期先调用 b');
+            }
+        })
+        Vue.Mixin({
+            destroyed() {
+                console.log('自定义全局混入destroyed比生命周期先调用 destroyed');
+            }
+        })
+
+        /**
+         * 
+         * 生命周期和全局方法：
+         *  将全局方法和生命周期方法利用mergeOptions方法合并，并修改this指向
+         *  再定义callHook方法，在特定位置进行调用就好
+         *  如果全局方法和生命周期同名，则优先全局方法被调用
+         * 
+         * */
+    </script>
+</body>
+
+</html>

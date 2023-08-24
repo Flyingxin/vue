@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <!-- 全局守卫路由
+        利用的是发布订阅模式
+
+        1 定义好router方法，会被Vue-router自动添加到路由守卫队列beforeHooks属性中
+        2 在要跳转路由的时候base.js中的transitionTo方法中封装好next方法便于一步步执行路由守卫中的方法
+
+     -->
+  </body>
+</html>

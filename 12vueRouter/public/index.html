@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <!-- 
+        1 Vue.use()  
+          -- 定义封装全局组件 <view-view></view-view>、<view-link></view-link>
+          -- 初始化初次加载时的路由
+        2 创建路由映射表
+          -- 深度格式化处理routes配置信息
+          -- 暴露出addRoutes动态添加路由方法、match匹配指定路由方法
+        3 浏览器路由管理
+          -- 分模式进行实现 hash 等等
+          -- 创建history【所有模式的父类】等类，  封装实现跳转功能
+          -- 所有的类继承父类，并实现特定需求
+        4 代理、响应式
+          -- 将$router $route暴露在vue实例对象上
+     -->
+  </body>
+</html>

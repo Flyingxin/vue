@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app" class="box" style="font-size: 14px;color: red">hello123 {{msg}} 1{{item}}<h1 class="nnn">2321</h1></div>
+    <script src="dist/vue.js"></script>
+    <script>
+        // 响应式 vue2
+        let vm = new Vue({
+            el: '#app',
+            data(){
+                // console.log(this); //底层要用call改变this指向，不然会指向windows
+                return{
+                    msg:'msgData',
+                    item:'itemData',
+                    string: 'string',
+                    array: [1, 2, 'string', { msg: 'obj' }],
+                    obj: {
+                        one: 1,
+                        two: 'string',
+                        three: [1, 2, 3, 'string', { msg: 'obj' }],
+                        four: {
+                            a: 555
+                        }
+                    }
+                }
+            },
+            props:{},
+            watch:{},
+            computed:{},
+        })
+        vm.array.splice(2)
+
+        /**
+         * 生成虚拟dom原理：
+         *  html字符串 -> ast语法树 -> 模板编译字符串 -> render函数 
+         *  调用vm实例上_render()，即可生成vnode
+         *  再调用vm实例上_update()，即可vnode -> 真实dom
+         * */
+    </script>
+</body>
+</html>

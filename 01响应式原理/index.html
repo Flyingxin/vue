@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="dist/vue.js"></script>
+    <script>
+        // 响应式 vue2
+        let vm = new Vue({
+            el: '#app',
+            data(){
+                // console.log(this); //底层要用call改变this指向，不然会指向windows
+                return{
+                    string: 'string',
+                    array: [1,[7,8,9],'string',{msg: 'obj'}],
+                    obj: {
+                        one: 1,
+                        two: 'string',
+                        three: [1,2,3,'string',{msg: 'obj'}],
+                        four: {
+                            a:555
+                        }
+                    }
+                }
+            },
+            props:{},
+            watch:{},
+            computed:{},
+        })
+        vm.array.splice(2)
+        console.log(vm.array);
+
+        /**
+         * 响应式原理：
+         * 
+         *  1 定义了Observer类，用于劫持对象，并对每一个对象添加‘__ob__’响应式、劫持数组重写方法并添加响应式、为每个属性添加响应式
+         *  2 响应式 ：利用深度优先原理遍历data属性，为每个属性添加Object.defineProperty方法 -> 使得每个属性都具有响应式
+         *  3 劫持数组 ：继承原本数组方法、重写push、pop等方法，并利用observerArray方法添加响应式
+         * 
+         *  注意： Object.defineProperty方法缺点  -> 只能给对象中的一个属性添加响应式，所以需要遍历对象并给每个对象添加方法
+         * */
+        // 
+    </script>
+</body>
+</html>

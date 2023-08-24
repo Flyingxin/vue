@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="box" style="font-size: 14px;color:red">hello123 {{msg}} 1{{item}}<h1 class="nnn">2321 {{array}}</h1>
+    </div>
+    <script src="dist/vue.js"></script>
+    <script>
+        // 响应式 vue2
+        let vm = new Vue({
+            el: '#app',
+            data() {
+                // console.log(this); //底层要用call改变this指向，不然会指向windows
+                return {
+                    msg: 'msgData',
+                    item: 'itemData',
+                    string: 'string',
+                    array: [1, 2, 'string', { msg: 'obj' }],
+                    obj: {
+                        one: 1,
+                        two: 'string',
+                        three: [1, 2, 3, 'string', { msg: 'obj' }],
+                        four: {
+                            a: 555
+                        }
+                    }
+                }
+            },
+            props: {},
+            watch: {},
+            computed: {},
+        })
+        console.log(vm);
+        
+        // setTimeout(() => {
+        //     vm.msg = '信息'
+        //     vm._update(vm._render())   // 没有收集依赖，就必须手动调用更新（最新信息 -> 虚拟dom -> 真实dom -> 渲染）
+        //                                // 若不手动更新 虽然会自动劫持 并代理到vm实例上，但是无法更新视图
+        // }, 1000);
+        // 所以我们要实现  自动收集这些数据，自动更新
+        /**
+         * dep实例对象，每个属性都有，数据发送改变的对应dep就会被收集在watcher类的deps、depsId中
+         * watcher实例对象，一个组件一个对应watcher对象
+         * watcher和dep 的关系 -> 多对多关系 -> 一个组件中有好多给属性，一个属性可以被多个组件共用
+         * 
+        */
+        /**
+         * 方案
+         * 1 Watcher类：自动更新视图 -> 封装了vm.update（vm._render()）
+         * 
+         * 2 Dep类： 监测属性是否发生变化【收集依赖】
+         * 
+         * 3 vue中更新策略：以组件为单位，给每个组件添加一个watcher
+         *       在挂载组件方法mountComponent上实例一个Watcher对象
+         * 
+         * 4 每次把组件挂载上去自动初次渲染（将watcher对象推进subs数组中）
+         * 
+         * 5 对每个属性进行劫持【Object.defineProperty方法中】，添加dep依赖 -> 监测数据是否发生变化
+         *       响应式监测到数据改变后,收集dep实例对象到watcher的deps、depsId中、watcher实例对象存到dep的subs中
+         *       最后利用 dep.notify() 通知每一个watcher更新自己的属性
+         * 
+         * 数组收集方案
+         * 1 在defineReactive方法中，获取子属性，判断子属下是否有dep对象，有则说明是对象、数组类型
+         * 2 然后在数组方法array.js定义notify  
+         *       -> 使得push、splice等方法可以notify通知dep去更新subs中的watcher实例对象 -> 完成一次数组的自动更新
+         * 
+         * 注意： dep的id与watcher的id取值顺序是，深度优先遍历，自下而上的取值方法，因为在响应式方法中命名的，所以是同样原理
+        */
+        // console.log(document.querySelectorAll('div')[0]);
+        setTimeout(() => {
+            vm.msg = '自动更新'
+            vm.array.push(123332)
+        }, 1000);
+    </script>
+</body>
+
+</html>

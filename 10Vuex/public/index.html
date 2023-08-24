@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <!-- Vuex配置过程 -->
+    <!-- 
+      1 Vue.use()的使用，
+        原理
+        1 执行这个方法
+        2 如果这个方法中有一个 install这个属性，这个属性是一个方法，会执行这个方法  -> 使得插件与vue产生关联
+          install方法若有参数，则第一个参数为vue的实例
+
+        --- Vue.use()执行install方法，使得$sotre暴露到每个组件身上
+
+      2 创建Store类 ---- 单例模式
+        1 格式化处理 - 并封装到$store中，供开发时调用
+        2 getter - 实例化Vue对象存储state的响应式属性，并最后代理到$store.state上
+        3 封装commit dispatch 【发布订阅模式】 - 供开发时调用
+        4 
+
+     -->
+  </body>
+</html>
